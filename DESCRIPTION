@@ -1,7 +1,7 @@
 Package: nlsmsn
-Title: Fitting finite mixture of scale mixture of skew-normal
+Title: Fitting nonlinear models with scale mixture of skew-normal
         distributions.
-Version: 0.0-2
+Version: 0.0-3
 Date: 2011-11-30
 Author: Aldo Garay <amedina@ime.usp.br>, Marcos Prates
         <marcosop@est.ufmg.br> and Victor Lachos
@@ -11,6 +11,6 @@ Description: Fit univariate non-linear scale mixture of
         skew-normal(NL-SMSN) regression.
 Depends: R (>= 2.10.0)
 License: GPL (>= 3.0)
-Packaged: 2012-03-27 20:04:01 UTC; marcosop
+Packaged: 2012-03-29 15:51:31 UTC; marcosop
 Repository: CRAN
-Date/Publication: 2012-03-27 20:37:18
+Date/Publication: 2012-04-17 17:48:40
