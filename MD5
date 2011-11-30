@@ -1,0 +1,11 @@
+726c1e76d43268711e3d209909c50c0a *ChangeLog
+dca4fe063ab8dbd20e4d850e13c68b64 *DESCRIPTION
+b20d635067951e6f75fea1b56c652ba8 *NAMESPACE
+1801197b7f3af0d2540e568337cbc88f *R/Utilitarios.R
+dd9cf1e6a9c1c65a40caf32491ecac17 *R/nlsmsn.R
+1abde56a357a0a059e5939f31c115cc2 *R/nlsmsnh.R
+ea903448574e95fd000de1d868a8404c *data/Oil.txt.gz
+ae9b2be3117864547d6052132f8903d3 *data/Ultrasonic.txt.gz
+d9d8435d7edc14a49188926b5e6e77a1 *man/Oil.Rd
+7aa3fe5174bec1a53a6d7b5b2c1327f4 *man/Ultrasonic.Rd
+47a28894ff74fccb51da054c3e80050c *man/smsn.nl.Rd
