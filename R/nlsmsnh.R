@@ -81,13 +81,13 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
 
         criterio <- sqrt((teta-param)%*%(teta-param))
 
-    if( (is.na(shape)|(abs(shape)>6))){
-          criterio=error/10
-          shape=20
-          betas<-betas.old
-          Delta<-Delta.old
-          Gama<-Gama.old
-           }
+#    if( (is.na(shape)|(abs(shape)>19))){
+#          criterio=error/10
+#          shape=20
+#          betas<-betas.old
+#          Delta<-Delta.old
+#          Gama<-Gama.old
+#           }
         betas.old <- betas
         Delta.old <- Delta
         Gama.old <- Gama
@@ -96,11 +96,12 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
       residuos<-(y-mu.1)/sqrt(vari)
       if (criteria == TRUE){
         lk <- sum(log( dt.ls(y, mu, sigma2,shape ,nu) ))
-        AIC <- (-2)*lk + 2*(p+3)
-        BIC <- (-2)*lk + (p+3)*log(n)
+        AIC <- (-2)*lk + 2*(p+2)     # Param = betas + sigma2 + nu 
+        BIC <- (-2)*lk + (p+2)*log(n)
+        EDC <- (-2)*lk + (p+2)*0.2*sqrt(n)
 
 #        obj.out <- list(betas = betas, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk, iter = count, n = length(y))
-          obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk, AIC=AIC, BIC=BIC, iter = count,res=residuos, n = length(y))
+          obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk, AIC=AIC, BIC=BIC, EDC=EDC, iter = count,res=residuos, n = length(y))
       } else {
 #        obj.out <- list(betas = betas, sigma2 = sigma2, shape = shape, nu = nu, iter = count, n = length(y))
          obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, iter = count,res=residuos, n = length(y))
@@ -175,25 +176,27 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
         teta <- c(betas, Delta, Gama,nu)
         criterio <- sqrt((teta-param)%*%(teta-param))
 
-    if( (is.na(shape)|(abs(shape)>6))){
-          criterio=error/10
-          shape=20
-          betas<-betas.old
-          Delta<-Delta.old
-          Gama<-Gama.old
-           }
+#    if( (is.na(shape)|(abs(shape)>16))){
+#          criterio=error/10
+#          shape=20
+#          betas<-betas.old
+#          Delta<-Delta.old
+#          Gama<-Gama.old
+#           }
         betas.old <- betas
         Delta.old <- Delta
         Gama.old <- Gama
       }
       vari<-sigma2*(k2-2/pi*k1^2*shape^2/(1+shape^2))
       residuos<-(y-mu.1)/sqrt(vari)
+      residuos=1
       if (criteria == TRUE){
         lk <- sum(log( dt.ls(y, mu, sigma2,shape ,nu) ))
-        AIC <- (-2)*lk + 2*(p+3)
+        AIC <- (-2)*lk + 2*(p+3)              # Param = betas + sigma2 + shape + nu 
         BIC <- (-2)*lk + (p+3)*log(n)
+        EDC <- (-2)*lk + (p+3)*0.2*sqrt(n)
 #        obj.out <- list(betas = betas, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk, iter = count, n = length(y))
-          obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk, AIC=AIC, BIC=BIC, iter = count,res=residuos, n = length(y))
+          obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk, AIC=AIC, BIC=BIC, EDC=EDC, iter = count,res=residuos, n = length(y))
       } else {
 #        obj.out <- list(betas = betas, sigma2 = sigma2, shape = shape, nu = nu, iter = count, n = length(y))
          obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, iter = count,res=residuos, n = length(y))
@@ -267,13 +270,13 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
         teta <- c(betas, Delta, Gama)
         criterio <- sqrt((teta-param)%*%(teta-param))
 
-        if( (is.na(shape)|(abs(shape)>6))){
-          criterio=error/10
-          shape=20
-          betas<-betas.old
-          Delta<-Delta.old
-          Gama<-Gama.old
-           }
+#        if( (is.na(shape)|(abs(shape)>19))){
+#          criterio=error/10
+#          shape=20
+#          betas<-betas.old
+#          Delta<-Delta.old
+#          Gama<-Gama.old
+#           }
 
         betas.old <- betas
         Delta.old <- Delta
@@ -284,10 +287,11 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
 
       if (criteria == TRUE){
         lk <- sum(log(dSNC (y, mu, sigma2, shape, nu)))
-       AIC <- (-2)*lk + 2*(p+4) 
+       AIC <- (-2)*lk + 2*(p+4)                       # Param = betas + sigma2 + shape + nu1 + nu2 
        BIC <- (-2)*lk + (p+4)*log(n)
+       EDC <- (-2)*lk + (p+4)*0.2*sqrt(n)
 #       obj.out <- list(betas =betas, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk, iter = count, n = length(y))
-        obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk, AIC=AIC, BIC=BIC, iter = count,res=residuos ,n = length(y))
+        obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk, AIC=AIC, BIC=BIC,EDC=EDC, iter = count,res=residuos ,n = length(y))
       } else {
 #       obj.out <- list(betas = betas, sigma2 = sigma2, shape = shape, nu = nu, iter = count, n = length(y))
         obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, iter = count, res=residuos,n = length(y))
@@ -298,7 +302,7 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
   }
 
   if (family == "Skew.slash"){
-      print("modelo Slash....")
+#      print("modelo Slash....")
       n <- length(y)
       p<- length(betas)
       delta <- Delta <- Gama <- c(0)
@@ -364,7 +368,7 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
         teta <- c(betas, Delta, Gama)
         criterio <- sqrt((teta-param)%*%(teta-param))
 
-#          if( (is.na(shape)|(abs(shape)>6))){
+#          if( (is.na(shape)|(abs(shape)>16))){
 #          criterio=error/10
 #          shape=20
 #          betas<-betas.old
@@ -380,11 +384,11 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
       residuos <-(y-mu.1)/sqrt(vari)
       if (criteria == TRUE){
         lk <- sum(log(dSS(y, mu, sigma2, shape, nu)))
-       AIC <- -2*lk + 2*(p+3)
+       AIC <- -2*lk + 2*(p+3)                          # Param = betas + sigma2 + shape + nu 
        BIC <- (-2)*lk + (p+3)*log(n)
-
+       EDC <- (-2)*lk + (p+3)*0.2*sqrt(n)
 #        obj.out <- list(betas = betas, sigma2 = sigma2, shape = shape, nu = nu,loglik = lk, iter = count, n = length(y))
-         obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk,  AIC=AIC, BIC=BIC, iter = count,res=residuos,n = length(y))
+         obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk,  AIC=AIC, BIC=BIC, EDC=EDC, iter = count,res=residuos,n = length(y))
       } else {
 #        obj.out <- list(betas = betas, sigma2 = sigma2, shape = shape, nu = nu,iter = count, n = length(y))
         obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, iter = count,res=residuos, n = length(y))
@@ -457,7 +461,7 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
         param <- teta
         teta <- c(betas, Delta, Gama)
         criterio <- sqrt((teta-param)%*%(teta-param))
-#          if( (is.na(shape)|(abs(shape)>6))){
+#          if( (is.na(shape)|(abs(shape)>16))){
 #          criterio=error/10
 #          shape=20
 #          betas<-betas.old
@@ -473,10 +477,11 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
       residuos <-(y-mu.1)/sqrt(vari)
       if (criteria == TRUE){
         lk <- sum(log( dSN (y, mu, sigma2, shape) ))
-       AIC <- -2*lk + 2*(p+2) 
+       AIC <- -2*lk + 2*(p+2)                          # Param = betas + sigma2 + shape  
        BIC <- (-2)*lk + (p+2)*log(n)
+       EDC <- (-2)*lk + (p+2)*0.2*sqrt(n)
 #        obj.out <- list(betas = betas, sigma2 = sigma2, shape = shape, loglik = lk, iter = count, n = length(y))
-         obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk,  AIC=AIC, BIC=BIC, iter = count, res=residuos, n = length(y))
+         obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk,  AIC=AIC, BIC=BIC, EDC=EDC, iter = count, res=residuos, n = length(y))
       } else {
 #        obj.out <- list(betas = betas, sigma2 = sigma2, shape = shape, iter = count, n = length(y))
          obj.out <- list(u = u, betas = betas, sigma2 = sigma2, shape = shape, nu = nu, iter = count,res=residuos ,n = length(y))
@@ -550,13 +555,13 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
         param <- teta
         teta <- c(betas, Delta, Gama)
         criterio <- sqrt((teta-param)%*%(teta-param))
-        if( (is.na(shape)|(shape>6))){
-          criterio=error/10
-          shape=20
-          betas<-betas.old
-          Delta<-Delta.old
-          Gama<-Gama.old
-           }
+#        if( (is.na(shape)|(shape>6))){
+#          criterio=error/10
+#          shape=20
+#          betas<-betas.old
+#          Delta<-Delta.old
+#          Gama<-Gama.old
+#           }
         betas.old <- betas
         Delta.old <- Delta
         Gama.old <- Gama
@@ -565,9 +570,10 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
       residuos<-(y-mu.1)/sqrt(vari)
       if (criteria == TRUE){
         lk <- sum(log( dSN (y, mu, sigma2, shape) ))
-       AIC <- (-2)*lk + 2*(p+1)
+       AIC <- (-2)*lk + 2*(p+1)                                  # Param = betas + sigma2 
        BIC <- (-2)*lk + (p+1)*log(n)
-        obj.out <- list(betas = betas, sigma2 = sigma2, shape = shape, loglik = lk,  AIC=AIC,  BIC=BIC, iter = count,res=residuos, n = length(y))
+       EDC <- (-2)*lk + (p+1)*0.2*sqrt(n)
+        obj.out <- list(betas = betas, sigma2 = sigma2, shape = shape, loglik = lk,  AIC=AIC,  BIC=BIC, EDC=EDC, iter = count,res=residuos, n = length(y))
       } else {
         obj.out <- list(betas = betas, sigma2 = sigma2, shape = shape, iter = count,res=residuos, n = length(y))
       }
@@ -675,9 +681,10 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
       residuos<-(y-mu.1)/sqrt(vari)
       if (criteria == TRUE){
         lk <- sum(log(dtH.ls(rho, y, z, mu , sigma2 ,shape, nu, rho.func)))
-       AIC <- (-2)*lk + 2*(p+3)
+       AIC <- (-2)*lk + 2*(p+3)                     # Param = betas + sigma2 + rho + nu  
        BIC <- (-2)*lk + (p+3)*log(n)
-        obj.out <- list(betas = betas, rho=rho,sigma2 = sigma2, shape = shape, nu = nu, loglik = lk,  AIC=AIC, BIC=BIC, iter = count, res=residuos,n = length(y),mah=dj)
+       EDC <- (-2)*lk + (p+3)*0.2*sqrt(n)
+        obj.out <- list(betas = betas, rho=rho,sigma2 = sigma2, shape = shape, nu = nu, loglik = lk,  AIC=AIC, BIC=BIC, EDC=EDC, iter = count, res=residuos,n = length(y),mah=dj)
       } else {
         obj.out <- list(betas = betas,rho=rho, sigma2 = sigma2, shape = shape, nu = nu, iter = count, res=residuos,n = length(y),mah=dj)
       }
@@ -761,9 +768,10 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
       residuos<-(y-mu.1)/sqrt(vari)
       if (criteria == TRUE){
         lk <- sum(log(dtH.ls(rho, y, z, mu , sigma2 ,shape, nu, rho.func)))
-       AIC <- (-2)*lk + 2*(p+4)
+       AIC <- (-2)*lk + 2*(p+4)                            # Param = betas + sigma2 + shape + rho + nu  
        BIC <- (-2)*lk + (p+4)*log(n)       
-        obj.out <- list(betas = betas, rho=rho,sigma2 = sigma2, shape = shape, nu = nu, loglik = lk,  AIC=AIC, BIC=BIC, iter = count, res=residuos,n = length(y),mah=dj)
+        EDC <- (-2)*lk + (p+4)*0.2*sqrt(n)
+        obj.out <- list(betas = betas, rho=rho,sigma2 = sigma2, shape = shape, nu = nu, loglik = lk,  AIC=AIC, BIC=BIC, EDC=EDC, iter = count, res=residuos,n = length(y),mah=dj)
       } else {
         obj.out <- list(betas = betas,rho=rho, sigma2 = sigma2, shape = shape, nu = nu, iter = count, res=residuos,n = length(y),mah=dj)
       }
@@ -854,9 +862,10 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
       residuos<-(y-mu.1)/sqrt(vari)
       if (criteria == TRUE){
         lk <- sum(log(dSNCH(rho, y, z, mu , sigma2 ,shape, nu, rho.func)))
-       AIC <- (-2)*lk + 2*(p+5)
+       AIC <- (-2)*lk + 2*(p+5)                            # Param = betas + sigma2 + shape + rho + nu1 + nu2  
        BIC <- (-2)*lk + (p+5)*log(n)
-        obj.out <- list(betas =betas, rho=rho, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk,  AIC=AIC, BIC=BIC, iter = count, res=residuos,n = length(y),mah=dj)
+       EDC <- (-2)*lk + (p+5)*0.2*sqrt(n)
+        obj.out <- list(betas =betas, rho=rho, sigma2 = sigma2, shape = shape, nu = nu, loglik = lk,  AIC=AIC, BIC=BIC, EDC=EDC, iter = count, res=residuos,n = length(y),mah=dj)
       } else {
         obj.out <- list(betas = betas, rho=rho, sigma2 = sigma2, shape = shape, nu = nu, iter = count, res=residuos,n = length(y),mah=dj)
       }
@@ -949,9 +958,10 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
       residuos <-(y-mu.1)/sqrt(vari)
       if (criteria == TRUE){
         lk <- sum(log(dSSH(rho, y, z, mu , sigma2 ,shape, nu, rho.func)))
-       AIC <- (-2)*lk + 2*(p+4) 
+       AIC <- (-2)*lk + 2*(p+4)                                     # Param = betas + sigma2 + shape + rho + nu  
        BIC <- (-2)*lk + (p+4)*log(n)
-        obj.out <- list(betas = betas, rho=rho, sigma2 = sigma2, shape = shape, nu = nu,loglik = lk,  AIC=AIC, BIC=BIC, iter = count, res=residuos,n = length(y),mah=dj)
+       EDC <- (-2)*lk + (p+4)*0.2*sqrt(n)
+        obj.out <- list(betas = betas, rho=rho, sigma2 = sigma2, shape = shape, nu = nu,loglik = lk,  AIC=AIC, BIC=BIC, EDC=EDC, iter = count, res=residuos,n = length(y),mah=dj)
       } else {
         obj.out <- list(betas = betas, rho=rho, sigma2 = sigma2, shape = shape, nu = nu,iter = count, res=residuos, n = length(y),mah=dj)
       }
@@ -1034,9 +1044,10 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
       residuos <-(y-mu.1)/sqrt(vari)
       if (criteria == TRUE){
         lk <- sum(log( dSNH (rho, y, z, mu , sigma2 ,shape, rho.func) ))
-       AIC <- (-2)*lk+ 2*(p+3)
+       AIC <- (-2)*lk+ 2*(p+3)                                    # Param = betas + sigma2 + shape + rho   
        BIC <- (-2)*lk + (p+3)*log(n)
-        obj.out <- list(betas = betas, rho=rho, sigma2 = sigma2, shape = shape, loglik = lk, AIC=AIC, BIC=BIC, iter = count, res=residuos,n = length(y),mah=dj)
+       EDC <- (-2)*lk + (p+3)*0.2*sqrt(n)
+        obj.out <- list(betas = betas, rho=rho, sigma2 = sigma2, shape = shape, loglik = lk, AIC=AIC, BIC=BIC, EDC=EDC, iter = count, res=residuos,n = length(y),mah=dj)
       } else {
         obj.out <- list(betas = betas, rho=rho, sigma2 = sigma2, shape = shape, iter = count,res=residuos,n = length(y),mah=dj)
       }
@@ -1122,10 +1133,10 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
       residuos <-(y-mu.1)/sqrt(vari)
       if (criteria == TRUE){
         lk <- sum(log( dSNH (rho, y, z, mu , sigma2 ,shape, rho.func) ))
-       AIC <- (-2)*lk + 2*(p+2)
+       AIC <- (-2)*lk + 2*(p+2)                               # Param = betas + sigma2 + rho 
        BIC <- (-2)*lk + (p+2)*log(n)
-
-        obj.out <- list(betas = betas, rho=rho, sigma2 = sigma2, shape = shape, loglik = lk,  AIC=AIC, BIC=BIC, iter = count, res=residuos,n = length(y),mah=dj)
+       EDC <- (-2)*lk + (p+2)*0.2*sqrt(n)
+        obj.out <- list(betas = betas, rho=rho, sigma2 = sigma2, shape = shape, loglik = lk,  AIC=AIC, BIC=BIC, EDC=EDC, iter = count, res=residuos,n = length(y),mah=dj)
       } else {
         obj.out <- list(betas = betas, rho=rho, sigma2 = sigma2, shape = shape, iter = count,res=residuos,n = length(y),mah=dj)
       }
