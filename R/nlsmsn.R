@@ -1,7 +1,6 @@
 ####################################################################
-##########       Algorítmo EM para SNI            ###############
+##########       Algoritmo EM para SNI            ###############
 #                   alterado em 25/04/09                            #
-
 smsn.nl <- function(y, x = NULL, z = NULL, betas = NULL, sigma2 = NULL, shape = NULL,  rho = NULL, 
            nu = NULL, nlf = NULL, rho.func = 1, reg.type = "Homoscedastic", criteria = FALSE, 
            family = "Skew.t", error = 0.00001, iter.max = 100){

@@ -1,23 +1,24 @@
 ################################################################################
-##### Funçao Não Linear para X e Betas......Calculo da 1ra e 2da derivada  #####
+##### Funcao Nao Linear para X e Betas......Calculo da 1ra e 2da derivada  #####
 ################################################################################
 
 smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family, error, iter.max){
-  # y: é o vetor de dados (amostra) de tamanho n
-  # mu, sigma2, shape, pii: são os valores iniciais para o algorítmo EM. Cada um deles deve ser um vetor de tamanho g
-  #                       (o algorítmo entende o número de componentes a ajustar baseado no tamanho desses vetores)
+  # y: eh o vetor de dados (amostra) de tamanho n
+  # mu, sigma2, shape, pii: sao os valores iniciais para o algoritmo EM. Cada um deles deve ser um vetor de tamanho g
+  #                       (o algoritmo entende o numero de componentes a ajustar baseado no tamanho desses vetores)
   #nu: valor inicial para o nu (no caso da Skew.cn deve ser um vetor bidimensional com valores entre 0 e 1)
-  #criteria: TRUE ou FALSE - Caso queira que seja calculada a log-verossimilhança do modelo ajustado
-  #cluster: TRUE ou FALSE - Caso queira um vetor de tamanho n indicando a qual componente a í-esima observação pertence
+  #criteria: TRUE ou FALSE - Caso queira que seja calculada a log-verossimilhanca do modelo ajustado
+  #cluster: TRUE ou FALSE - Caso queira um vetor de tamanho n indicando a qual componente a i-esima observacao pertence
   #family: c("Skew.t","Skew.cn","Skew.slash","Skew.normal","Normal") - Skew.t: Ajusta por misturas de Skew-T
   #                                       - Skew.cn: Ajusta por misturas de Skew Normal Contaminada
-  #                                       - Skew.slash: Ajusta por misturas de Skew-Slash (ATENÇÃO: AINDA COM PROBLEMAS)
+  #                                       - Skew.slash: Ajusta por misturas de Skew-Slash (ATENCAO: AINDA COM PROBLEMAS)
   #                                       - Skew.normal: Ajusta por misturas de Skew Normal
   #                                       - Normal: Misturas de Normais
-  #error: define o critério de parada do algorítmo.
+  #error: define o criterio de parada do algoritmo.
   
   
-  if (family == "t"){
+  if (family == "t")
+    {
   shape <- 0
       n <- length(y)
       p <- length(betas)
@@ -64,7 +65,7 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
           ### M-step: atualizar mu, Delta, Gama, sigma2 ###
 #
 #         betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),algorithm = "port",trace=TRUE,weights=S1))) #sum(S1*y - Delta.old*S2) / sum(S1)
-          betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=FALSE,weights=S1))) #sum(S1*y - Delta.old*S2) / sum(S1)
+          betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=FALSE,weights=as.vector(S1)))) #sum(S1*y - Delta.old*S2) / sum(S1)
           #print(betas)
           Gama <- sum(S1*(y - mu.1)^2 - 2*(y - mu.1)*Delta.old*S2 + Delta.old^2*S3) / n
  #         Delta <- sum(S2*(y - mu.1)) / sum(S3)
@@ -112,7 +113,8 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
       return(obj.out)
   }
 
-  if (family == "Skew.t"){
+  if (family == "Skew.t")
+    {
       n <- length(y)
       p<- length(betas)
       delta <- Delta <- Gama <- c(0)
@@ -130,7 +132,8 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
       criterio <- 1
       count <- 0
 
-      while(criterio > error & count<=iter.max){
+      while(criterio > error & count<=iter.max)
+        {
       count <- count + 1
      # print(count)
 #        tal <- matrix(0, n)
@@ -161,7 +164,7 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
           ### M-step: atualizar mu, Delta, Gama, sigma2 ###
 #
 #         betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),algorithm = "port",trace=TRUE,weights=S1))) #sum(S1*y - Delta.old*S2) / sum(S1)
-          betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=FALSE,weights=S1))) #sum(S1*y - Delta.old*S2) / sum(S1)
+          betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=FALSE,weights=as.vector(S1)))) #sum(S1*y - Delta.old*S2) / sum(S1)
           #print(betas)
           Gama <- sum(S1*(y - mu.1)^2 - 2*(y - mu.1)*Delta.old*S2 + Delta.old^2*S3) / n
           Delta <- sum(S2*(y - mu.1)) / sum(S3)
@@ -207,7 +210,8 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
       return(obj.out)
   }
 
-  if (family == "Skew.cn"){
+  if (family == "Skew.cn")
+    {
       n <- length(y)
       p<- length(betas)
       delta <- Delta <- Gama <- c(0)
@@ -225,7 +229,8 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
       criterio <- 1
       count <- 0
 
-      while(criterio > error & count<=iter.max){
+      while(criterio > error & count<=iter.max)
+        {
       count <- count + 1
       #print(count)
 
@@ -255,7 +260,7 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
           ### M-step: atualizar mu, Delta, Gama, sigma2 ###
 #
 #          betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),algorithm = "port",trace=TRUE,weights=S1))) #sum(S1*y - Delta.old*S2) / sum(S1)
-         betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=FALSE,weights=S1))) #sum(S1*y - Delta.old*S2) / sum(S1)
+         betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=FALSE,weights=as.vector(S1)))) #sum(S1*y - Delta.old*S2) / sum(S1)
           #print(betas)
           Gama <- sum(S1*(y - mu.1)^2 - 2*(y - mu.1)*Delta.old*S2 + Delta.old^2*S3) / n
           Delta <- sum(S2*(y - mu.1)) / sum(S3)
@@ -301,7 +306,8 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
       return(obj.out)
   }
 
-  if (family == "Skew.slash"){
+  if (family == "Skew.slash")
+    {
 #      print("modelo Slash....")
       n <- length(y)
       p<- length(betas)
@@ -353,7 +359,7 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
           ymod<-(y-Delta.old*S2/S1)
 
           ### M-step: atualizar mu, Delta, Gama, sigma2 ###
-         betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),algorithm = "port",trace=TRUE,weights=S1))) #sum(S1*y - Delta.old*S2) / sum(S1)
+         betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),algorithm = "port",trace=FALSE,weights=S1))) #sum(S1*y - Delta.old*S2) / sum(S1)
 #          betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=TRUE,weights=S1))) #sum(S1*y - Delta.old*S2) / sum(S1)
           #print(betas)
           Gama <- sum(S1*(y - mu.1)^2 - 2*(y - mu.1)*Delta.old*S2 + Delta.old^2*S3) / n
@@ -400,7 +406,8 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
 
 ################################################################################
 
-  if (family == "Skew.normal"){
+  if (family == "Skew.normal")
+    {
       n <- length(y)
       p<- length(betas)
       delta <- Delta <- Gama <- c(0)
@@ -491,7 +498,8 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
       return(obj.out)
   }
 
-  if (family == "Normal"){
+  if (family == "Normal")
+    {
       shape <- 0
       n <- length(y)
       p<- length(betas)
@@ -586,26 +594,27 @@ smsn.nl.intern <- function(y, x, betas, sigma2, shape, nu, nlf, criteria, family
 
 
 ####################################################################
-##########       Algorítmo EM para SNI            ###############
+##########       Algoritmo EM para SNI            ###############
 #                   alterado em 05/02/2010                         ##
 
 smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.func, criteria, family , error, iter.max){
-  # y: é o vetor de dados (amostra) de tamanho n
+  # y: e o vetor de dados (amostra) de tamanho n
   # rho: parametro do Heter
   # z matrix planeja do heter.
-  # mu, sigma2, shape, pii: são os valores iniciais para o algorítmo EM. Cada um deles deve ser um vetor de tamanho g
-  #                       (o algorítmo entende o número de componentes a ajustar baseado no tamanho desses vetores)
+  # mu, sigma2, shape, pii: sao os valores iniciais para o algoritmo EM. Cada um deles deve ser um vetor de tamanho g
+  #                       (o algoritmo entende o numero de componentes a ajustar baseado no tamanho desses vetores)
   #nu: valor inicial para o nu (no caso da Skew.cn deve ser um vetor bidimensional com valores entre 0 e 1)
-  #loglik: TRUE ou FALSE - Caso queira que seja calculada a log-verossimilhança do modelo ajustado
-  #cluster: TRUE ou FALSE - Caso queira um vetor de tamanho n indicando a qual componente a í-esima observação pertence
+  #loglik: TRUE ou FALSE - Caso queira que seja calculada a log-verossimilhanca do modelo ajustado
+  #cluster: TRUE ou FALSE - Caso queira um vetor de tamanho n indicando a qual componente a i-esima observacao pertence
   #family: c("Skew.t","Skew.cn","Skew.slash","Skew.normal","Normal") - Skew.t: Ajusta por misturas de Skew-T
-  #                                       - Skew.slashL: Ajusta por misturas de Skew-Slash (ATENÇÃO: AINDA COM PROBLEMAS)
+  #                                       - Skew.slash: Ajusta por misturas de Skew-Slash (ATENCAO: AINDA COM PROBLEMAS)
   #                                       - Skew.normal: Ajusta por misturas de Skew Normal
   #                                       - Normal: Misturas de Normais
-  #error: define o critério de parada do algorítmo.
+  #error: define o criterio de parada do algoritmo.
 
 
-  if (family == "t"){
+  if (family == "t")
+    {
       shape <- 0
       n <- length(y)
       p<- length(betas)
@@ -654,7 +663,7 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
           ### M-step: atualizar mu, Delta, Gama, sigma2 ###
 #
 
-          betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=FALSE,weights=S1))) #sum(S1*y - Delta.old*S2) / sum(S1)
+          betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=FALSE,weights=as.vector(S1)))) #sum(S1*y - Delta.old*S2) / sum(S1)
           #print(betas)
           Gama <- sum(S1*(y - mu.1)^2 - 2*(y - mu.1)*Delta.old*S2 + Delta.old^2*S3) / n
           Delta <-0
@@ -692,7 +701,8 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
       return(obj.out)
   }
 
-  if (family == "Skew.t"){
+  if (family == "Skew.t")
+    {
       n <- length(y)
       p<- length(betas)
       delta <- Delta <- Gama <- c(0)
@@ -741,7 +751,7 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
           ### M-step: atualizar mu, Delta, Gama, sigma2 ###
 #
 
-          betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=FALSE,weights=S1))) #sum(S1*y - Delta.old*S2) / sum(S1)
+          betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=FALSE,weights=as.vector(S1)))) #sum(S1*y - Delta.old*S2) / sum(S1)
           #print(betas)
           Gama <- sum(S1*(y - mu.1)^2 - 2*(y - mu.1)*Delta.old*S2 + Delta.old^2*S3) / n
           Delta <-sum(S2*(y - mu.1)) / sum(S3)
@@ -779,7 +789,8 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
       return(obj.out)
   }
 
-  if (family == "Skew.cn"){
+  if (family == "Skew.cn")
+    {
       n <- length(y)
       p<- length(betas)
       delta <- Delta <- Gama <- c(0)
@@ -835,7 +846,7 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
 
           ### M-step: atualizar mu, Delta, Gama, sigma2 ###
 #
-          betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=FALSE,weights=S1))) #sum(S1*y - Delta.old*S2) / sum(S1)
+          betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=FALSE,weights=as.vector(S1)))) #sum(S1*y - Delta.old*S2) / sum(S1)
           #print(betas)
           Gama <- sum(S1*(y - mu.1)^2 - 2*(y - mu.1)*Delta.old*S2 + Delta.old^2*S3) / n
           Delta <- sum(S2*(y - mu.1)) / sum(S3)
@@ -874,7 +885,7 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
   }
 
   if (family == "Skew.slash"){
-      print("modelo Slash....")
+     # print("modelo Slash....")
       n <- length(y)
       p<- length(betas)
       delta <- Delta <- Gama <- c(0)
@@ -931,7 +942,7 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
 #
 
 
-          betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=FALSE,weights=S1))) #sum(S1*y - Delta.old*S2) / sum(S1)
+          betas <-as.vector(coef(nls(ymod ~ nlf(x,betas),start=list(betas=betas.old),trace=FALSE,weights=as.vector(S1)))) #sum(S1*y - Delta.old*S2) / sum(S1)
           #print(betas)
           Gama <- sum(S1*(y - mu.1)^2 - 2*(y - mu.1)*Delta.old*S2 + Delta.old^2*S3) / n
           Delta <- sum(S2*(y - mu.1)) / sum(S3)
@@ -970,7 +981,8 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
       return(obj.out)
   }
 
-  if (family == "Skew.normal"){
+  if (family == "Skew.normal")
+    {
       n <- length(y)
       p<- length(betas)
       delta <- Delta <- Gama <- c(0)
@@ -1056,7 +1068,8 @@ smsn.nlh.intern <- function(y, x, z, betas, sigma2, shape, rho, nu, nlf, rho.fun
       return(obj.out)
   }
 
- if (family == "Normal"){
+ if (family == "Normal")
+   {
       shape <- 0
       n <- length(y)
       p<- length(betas)

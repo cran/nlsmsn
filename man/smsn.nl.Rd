@@ -5,9 +5,11 @@
 Return EM algorithm output for NL-SMSN regression for both "Homoscedastic" and "Heteroscedastic" (univaritate case, p=1).
 }
 \usage{
-smsn.nl(y, x = NULL, z = NULL, betas = NULL, sigma2 = NULL, shape = NULL, rho = NULL, 
-        nu = NULL, nlf = NULL, rho.func = 1, reg.type = "Homoscedastic", criteria = FALSE, 
-        family = "Skew.t", error = 1e-05, iter.max = 100)
+smsn.nl(y, x = NULL, z = NULL, betas = NULL, sigma2 = NULL, 
+shape = NULL, rho = NULL, 
+nu = NULL, nlf = NULL, rho.func = 1, 
+reg.type = "Homoscedastic", criteria = FALSE, 
+family = "Skew.t", error = 1e-05, iter.max = 100)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

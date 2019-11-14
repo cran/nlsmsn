@@ -1,7 +1,7 @@
 ################################################################
 ##########          Densidades das SNI              ############
 
-## Densidade/CDF da SN com locação escala #######
+## Densidade/CDF da SN com locacao escala #######
 
 dSN <- function(y, mu , sigma2 = 1, shape=1){
   dens <- 2*dnorm(y, mu, sqrt(sigma2))*pnorm(shape*((y - mu)/sqrt(sigma2)))
@@ -14,7 +14,7 @@ dSNH <- function(rho, y, z, mu , sigma2 = 1, shape=1, rho.func){
   return(dens)
 }
 
-## Densidade/CDF da ST com locação escala #######
+## Densidade/CDF da ST com locacao escala #######
 
 dt.ls <- function(x, loc , sigma2 = 1,shape=1, nu = 4){
   d <- (x - loc)/sqrt(sigma2)
@@ -69,8 +69,7 @@ dSSH <- function(rho, y, z, mu, sigma2, shape,nu, rho.func){
 }
 
 ##############################################################
-######        FunÃ§ao  para o modelo Heterosced        #######
-
+######        Funcao  para o modelo Heteroscedastico   #######
 nlwi<-function(z,rho, type=1){
 if(type == 1) resp<- exp(z*rho)
 else resp<-z^rho

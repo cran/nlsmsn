@@ -1,1 +1,4 @@
+  importFrom("stats", "coef", "dnorm", "dt", "integrate", "nls",
+             "optimize", "pgamma", "pnorm", "pt")
+
 export(smsn.nl)
