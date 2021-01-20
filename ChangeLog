@@ -1,3 +1,7 @@
+2020-12-22 (0.0-6) Marcos Prates <marcosop@est.ufmg.br>, Aldo Garay <amedina@ime.usp.br> and Victor Lachos <hlachos@ime.unicamp.br>
+
+	* fix CRAN requirements
+
 2019-11-13 (0.0-5) Marcos Prates <marcosop@est.ufmg.br>, Aldo Garay <amedina@ime.usp.br> and Victor Lachos <hlachos@ime.unicamp.br>
 
 	* improve functions making them more stable
